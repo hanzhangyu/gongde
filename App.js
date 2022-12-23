@@ -122,7 +122,7 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.total}>{knockCount}功德</View>
+      <View style={styles.total}><Text style={styles.totalText}>{knockCount}功德</Text></View>
       <View style={styles.imgContainer}>
         {knockList.map((ts) => (
           <KnockedText key={ts} />
@@ -170,8 +170,10 @@ const styles = StyleSheet.create({
   total: {
     position: 'absolute',
     zIndex: 1,
-    top: 10,
+    top: 100,
     right: 10,
+  },
+  totalText: {
     color: '#fff',
   },
   imgContainer: {
