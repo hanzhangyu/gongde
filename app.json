@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "animated-muyu-test",
+    "name": "GongDe",
     "slug": "gongde",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/muyu.jpeg",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -12,7 +12,8 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/c2960115-f235-4cb5-9804-e2d158608b4b"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -24,16 +25,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.PaulHan.gongde"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/muyu.jpeg"
     },
     "extra": {
       "eas": {
         "projectId": "c2960115-f235-4cb5-9804-e2d158608b4b"
       }
     },
-    "owner": "paulhan"
+    "owner": "paulhan",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
   }
 }
