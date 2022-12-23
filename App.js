@@ -12,7 +12,7 @@ import KnockedText from './components/KnockedText';
 
 const useGetState = (initialValue) => {
   const [value, setValue] = useState(initialValue);
-  const valueRef = useRef(value).current;
+  const valueRef = useRef(value);
   valueRef.current = value;
   const getValue = () => valueRef.current;
   return [value, setValue, getValue];
@@ -66,6 +66,7 @@ const App = () => {
   };
 
   const [knockList, setKnockList, getKnockList] = useGetState([]);
+  const [knockCount, setKnockCount, getKnockCount] = useGetState(0);
   const soundRef = useRef();
   useEffect(() => {
     Audio.Sound.createAsync(require('./assets/muyu.mp3')).then(({ sound }) => {
@@ -73,20 +74,23 @@ const App = () => {
     });
     spring();
   }, []);
-  const knock = () => {
+  const knock = (duration = 100) => {
+    console.log('knock');
     fadeAnim.setValue(1);
     Animated.sequence([
       Animated.timing(heightAnim, {
         toValue: 200,
-        duration: 100,
+        duration: duration,
       }),
       Animated.timing(heightAnim, {
         toValue: 210,
-        duration: 100,
+        duration: duration,
       }),
     ]).start((finished) => {
       console.log(finished);
     });
+    console.log('getKnockCount()', knockCount, getKnockCount());
+    setKnockCount(getKnockCount() + 1);
     setKnockList([...knockList, Date.now()]);
     setTimeout(() => {
       const _knockList = getKnockList();
@@ -96,13 +100,36 @@ const App = () => {
     soundRef.current.replayAsync();
   };
 
+  const timerRef = useRef();
+  const keepKnockTimerRef = useRef();
+  const keepFastKnockTimerRef = useRef();
+  const handlePressIn = () => {
+    knock();
+    timerRef.current = setTimeout(() => {
+      keepKnockTimerRef.current = setInterval(() => knock(), 200);
+      keepFastKnockTimerRef.current = setTimeout(() => {
+        clearInterval(keepKnockTimerRef.current);
+        keepKnockTimerRef.current = setInterval(() => knock(50), 100);
+      }, 5000);
+    }, 2000);
+  };
+  const handlePressOut = () => {
+    timerRef.current && clearTimeout(timerRef.current);
+    keepKnockTimerRef.current && clearInterval(keepKnockTimerRef.current);
+    keepFastKnockTimerRef.current &&
+      clearTimeout(keepFastKnockTimerRef.current);
+  };
+
   return (
     <View style={styles.container}>
+      <View style={styles.total}>{knockCount}功德</View>
       <View style={styles.imgContainer}>
         {knockList.map((ts) => (
           <KnockedText key={ts} />
         ))}
-        <TouchableWithoutFeedback onPress={knock}>
+        <TouchableWithoutFeedback
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}>
           <Animated.Image
             style={[
               styles.img,
@@ -118,7 +145,7 @@ const App = () => {
           />
         </TouchableWithoutFeedback>
       </View>
-      <View style={styles.buttonRow}>
+      {/* <View style={styles.buttonRow}>
         <Button title="Fade In" onPress={fadeIn} />
         <Button title="Fade Out" onPress={fadeOut} />
         <Button title="Spring" onPress={spring} />
@@ -127,7 +154,7 @@ const App = () => {
         <Button title="Scale In" onPress={scaleIn} />
         <Button title="Scale Out" onPress={scaleOut} />
         <Button title="Knock" onPress={knock} />
-      </View>
+      </View> */}
       {/* <Text>{knockList}</Text> */}
     </View>
   );
@@ -138,6 +165,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'black',
+  },
+  total: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 10,
+    right: 10,
+    color: '#fff',
   },
   imgContainer: {
     width: 210,

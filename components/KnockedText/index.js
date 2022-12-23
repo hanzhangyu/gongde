@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Animated, Text, View, StyleSheet, Button } from 'react-native';
+import { Animated, Text, View, StyleSheet, Button, Easing } from 'react-native';
 
 const KnockedText = () => {
   const topAnim = useRef(new Animated.Value(60)).current;
@@ -12,6 +12,7 @@ const KnockedText = () => {
     Animated.timing(fadeAnim, {
       toValue: 0,
       duration: 1000,
+      easing: Easing.in(Easing.ease),
     }).start();
   }, [])
   return <Animated.Text style={[

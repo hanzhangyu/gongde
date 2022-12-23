@@ -4,7 +4,7 @@
     "slug": "gongde",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/muyu.jpeg",
+    "icon": "./assets/favicon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -29,7 +29,7 @@
       "package": "com.PaulHan.gongde"
     },
     "web": {
-      "favicon": "./assets/muyu.jpeg"
+      "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
